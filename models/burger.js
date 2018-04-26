@@ -8,16 +8,16 @@ var burger = {
             callback(res);
         });
     },
-    // insertOne: function(callBack) {
-    //     orm.insertOne("burgers", function(res) {
-    //         callBack(res);
-    //     });
-    // },
-    // updateOne: function(callBack) {
-    //     orm.updateOne("burgers", function(res) {
-    //         callBack(res);
-    //     });
-    // }
+    insertOne: function(cols, vals, callBack) {
+        orm.insertOne("burgers", cols, vals, function(res) {
+            callBack(res);
+        });
+    },
+    updateOne: function(objColVals, condition, callBack) {
+        orm.updateOne("burgers", function(res) {
+            callBack(res);
+        });
+    }
 };
 
 // export the database functions for the controller (burgers_controller.js)
