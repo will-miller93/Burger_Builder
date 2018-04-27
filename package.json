@@ -1,9 +1,10 @@
 {
-  "name": "Burger_Builder",
+  "name": "burger_builder",
   "version": "1.0.0",
   "description": "A burger building app using mySql, Node, Express, Handlebars and self made ORM. Following the MVC design pattern.",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
