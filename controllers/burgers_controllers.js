@@ -1,7 +1,5 @@
 var express = require("express");
 
-var express = require("express");
-
 var router = express.Router();
 
 // require in the files you will need for this controller.
@@ -14,11 +12,11 @@ var burger = require("../models/burger.js");
 // router.get
 router.get("/", function(req, res) {
     burger.all(function(data) {
-        var objinst = {
+        var handleObj = {
             burgers: data
         }
-        console.log(objinst);
-        res.render("index", objinst);
+        console.log(handleObj);
+        res.render("index", handleObj);
     })
 })
 // one to post a newly created burger to the database

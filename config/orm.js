@@ -1,82 +1,95 @@
 // require the connection for the ORM from the connection file.
 var connection = require("../config/connection.js");
 
-// object for all of our mySql statement functions 
 // creating the ORM
-function insertQuestionMarks(num) {
+function printQuestionMarks(num) {
     var arr = [];
-
+  
     for (var i = 0; i < num; i++) {
-        arr.push("?");
+      arr.push("?");
     }
-
+  
     return arr.toString();
 }
+  
 
-function translateToSql(obj) {
+function objToSql(ob) {
     var arr = [];
-
-    // loop through the keys and the push the key/value as a string int arr.
-    for (var key in obj) {
-        var value = ob[key];
-        // check to skip hiddin properties.
-        if (Object.hasOwnProperty.call(obj, key)) {
-            // if string with spaces, add quotations.
-            if (typeOf === "string" && value.indexOf(" ") >= 0) {
-                value = "'" + value + "'";
-            }
-            arr.push(key + "=" + value);
+  
+    // loop through the keys and push the key/value as a string int arr
+    for (var key in ob) {
+      var value = ob[key];
+      // check to skip hidden properties
+      if (Object.hasOwnProperty.call(ob, key)) {
+        // if string with spaces, add quotations (Lana Del Grey => 'Lana Del Grey')
+        if (typeof value === "string" && value.indexOf(" ") >= 0) {
+          value = "'" + value + "'";
         }
+        // e.g. {name: 'Lana Del Grey'} => ["name='Lana Del Grey'"]
+        // e.g. {sleepy: true} => ["sleepy=true"]
+        arr.push(key + "=" + value);
+      }
     }
+  
     // translate array of strings to a single comma-separated string
     return arr.toString();
 }
-
+  
+  
+// METHODS NECESSARY TO EXECUTE MYSQL COMMANDS
 var orm = {
-    selectAll: function(tableInput, callBack) {
+    selectAll: function(tableInput, cb) {
         var queryString = "SELECT * FROM " + tableInput + ";";
         connection.query(queryString, function(err, result) {
-            if (err) {
-                throw err;
-            }
-            callback(result);
-        })
-    },
-    insertOne: function(table, col, vals, callBack) {
+          if (err) {
+            throw err;
+          }
+          cb(result);
+        });
+	},
+	
+    insertOne: function(table, cols, vals, cb) {
         var queryString = "INSERT INTO " + table;
+    
         queryString += " (";
         queryString += cols.toString();
         queryString += ") ";
         queryString += "VALUES (";
-        queryString += insertQuestionMarks(vals.length);
-        queryString += ");";
-
+        queryString += printQuestionMarks(vals.length);
+        queryString += ") ";
+    
         console.log(queryString);
+    
         connection.query(queryString, vals, function(err, result) {
-            if (err) {
-                throw err;
-            }
-            callBack(result);
-        })
-    },
-    updateOne: function(table, objColVals, condition, callback) {
+          if (err) {
+            throw err;
+          }
+    
+          cb(result);
+        });
+	  },
+	  
+    updateOne: function(table, objColVals, condition, cb) {
         var queryString = "UPDATE " + table;
+    
         queryString += " SET ";
-        queryString += translateToSql(objColVals);
+        queryString += objToSql(objColVals);
         queryString += " WHERE ";
         queryString += condition;
-
+    
         console.log(queryString);
         connection.query(queryString, function(err, result) {
-            if (err) {
-                throw err;
-            }
-
-            callBack();
+          if (err) {
+            throw err;
+          }
+    
+          cb(result);
         });
-    }
+      }
 };
 
 // export the orm object for the model (burger.js)
 module.exports = orm;
+
+
 
