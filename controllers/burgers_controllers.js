@@ -11,7 +11,7 @@ var burger = require("../models/burger.js");
 // one to get all of the information from the database.
 // router.get
 router.get("/", function(req, res) {
-    burger.all(function(data) {
+    burger.selectAll(function(data) {
         var handleObj = {
             burgers: data
         }
@@ -22,7 +22,7 @@ router.get("/", function(req, res) {
 // one to post a newly created burger to the database
 // router.post
 router.post("/api/burgers", function(req, res) {
-    burger.create( ["burger_name", "devoured"], [req.body.burger_name, req.body.devoured], function(data) {
+    burger.insertOne( ["burger_name", "devoured"], [req.body.burger_name, req.body.devoured], function(data) {
         res.json(data);
     })
 })
@@ -30,7 +30,7 @@ router.post("/api/burgers", function(req, res) {
 // router.put
 router.put("/api/burgers/:id", function(req, res) {
     var devoured = "id = " + req.params.id;
-    burger.update({ devoured: req.params.devoured }, devoured, function(data) {
+    burger.updateOne({ devoured: req.params.devoured }, devoured, function(data) {
         if (err) throw err;
     })
 })
