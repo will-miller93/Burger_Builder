@@ -3,7 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 
 // set PORT
-var PORT = process.env.PORT || 3000;
+var port = process.env.PORT || 3000;
 
 // new express instance
 var app = express();
@@ -27,6 +27,6 @@ var routes = require("./controllers/burgers_controllers");
 
 app.use(routes);
 
-app.listen(PORT, function() {
+app.listen(port, function() {
   console.log("App now listening at localhost:" + PORT);
 });
