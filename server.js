@@ -3,7 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 
 // set PORT
-var port = process.env.PORT || 3000;
+var PORT = process.env.PORT || 3000;
 
 // new express instance
 var app = express();
